@@ -1,38 +1,36 @@
-# Challenge: Brute Forcing a Hash
+# Brute Force Hashing – Learning Notes
 
-## 1. The Scenario
-*   **The Problem:** We are given a Hash (the fingerprint) and we need to find the Input (the color).
-*   **The Constraint:** Hashing is "One-Way," so we cannot reverse the math.
-*   **The Vulnerability:** The input has "Low Entropy." We know it MUST be one of 6 colors.
+## What the task was
+* **Goal:** Given a specific hash, I needed to find which color from a list produced it.
+* **Problem:** Hashing is "One-Way" math. I cannot just reverse the hash to get the input.
+* **Advantage:** I knew the input *must* be one of 6 specific colors (Red, Green, Blue, etc.).
 
-## 2. The Solution (Rainbow Table Attack)
-Since the list of possible inputs is small (only 6 colors), we can **Brute Force** it. We hash every possible color until we find a match.
+## How I approached it
+1.  Since the list of possible inputs was small, I could try them all (Brute Force).
+2.  I wrote a loop to take each color, turn it into bytes, and hash it.
+3.  I compared that new hash to the target hash.
+4.  If they matched, I returned the color name.
 
-## 3. The Code Solution
+## The Logic (Code Snippet)
 ```javascript
-const { sha256 } = require("ethereum-cryptography/sha256");
-const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
+// Loop through the known list of colors
+for (let i = 0; i < COLORS.length; i++) {
+    
+    // 1. Convert string to bytes
+    const byteColor = utf8ToBytes(COLORS[i]);
 
-const COLORS = ['red', 'green', 'blue', 'yellow', 'pink', 'orange'];
+    // 2. Hash the bytes
+    const hashedColor = sha256(byteColor);
 
-function findColor(hash) {
-    // 1. Loop through the known list of "suspects"
-    for (let i = 0; i < COLORS.length; i++) {
-        
-        // 2. Convert string to bytes (computers only speak bytes)
-        const byteColor = utf8ToBytes(COLORS[i]);
-
-        // 3. Hash the suspect
-        const hashedColor = sha256(byteColor);
-
-        // 4. Compare the "Hex" strings
-        if (toHex(hashedColor) === toHex(hash)) {
-            return COLORS[i]; // FOUND IT!
-        }
+    // 3. Compare the hashes (converted to Hex strings for safety)
+    if (toHex(hashedColor) === toHex(hash)) {
+        return COLORS[i]; 
     }
 }
+
 ```
 
-## 4. Auditor's Takeaway
-*   **Why was this easy?** Because the list of secrets (COLORS) was small.
-*   **Security Lesson:** Never use a password chosen from a small list (like "password123" or dictionary words). Hackers can pre-calculate the hashes (Rainbow Table) and find the match instantly, just like this code did.
+## Security note
+
+This brute-force method only worked because the "secret" was part of a very small list.
+If the input came from a list of millions of words (like a dictionary), a hacker could pre-calculate all the hashes (Rainbow Table) and still find the answer quickly.
