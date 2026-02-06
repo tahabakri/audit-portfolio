@@ -17,3 +17,4 @@ Our code worked instantly because there were only 6 colors. What would happen to
 
 **My Answer:**
 No, it would not be instant. It would technically "work," but it would take a huge amount of computing power and time. Brute forcing is fast for small lists (6 items), but very slow for big lists (1 billion items). This is why short passwords are weak and long passwords are strong.
+
