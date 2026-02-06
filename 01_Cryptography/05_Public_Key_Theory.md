@@ -40,3 +40,22 @@
 **Context:** Bitcoin uses ECDSA (secp256k1) instead of RSA.
 **Auditor Question:** The text mentions "smaller key sizes." Why is a smaller key size important for a Blockchain that is stored on thousands of computers?
 **My Answer:** [Blockchains store data forever on thousands of computers. Smaller keys mean less storage space and faster calculations, which makes the network more efficient.]
+
+# Public Key Theory – Learning Notes
+
+## 1. The "General's Problem" (Symmetric)
+**Question:** The video says Generals had to meet in person to exchange keys. Why is this impossible for the Internet (Web3)?
+**My Answer:** [this impossible for the internet because there are millions of people on the internet and it is impossible to meet all of them in person to exchange keys]
+
+## 2. The "Split Key" (Asymmetric)
+**Question:** Whit Diffie split the key into two parts.
+* **Public Key:** Used to Encrypt (Lock) or Verify.
+* **Private Key:** Used to Decrypt (Unlock) or Sign.
+**Auditor Check:** Which key do I put on my Twitter bio? Which key do I delete from my computer if I think I'm hacked?
+**My Answer:** [private key should be deleted from my computer if i think im hacked]
+
+## 3. The "Wax Seal" (Authentication)
+**Question:** The video says "Only Bob can decrypt the message" but also "Anyone can verify the message".
+**Auditor Scenario:** If I steal Bob's PUBLIC key, can I steal his money?
+**Auditor Scenario:** If I steal Bob's PRIVATE key, can I sign a transaction to send his money to me?
+**My Answer:** [Yes. If I steal Bob's PRIVATE key, I can sign a transaction to send his money to me. The network cannot tell the difference between Bob and the Hacker.]
