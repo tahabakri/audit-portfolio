@@ -16,3 +16,5 @@ Did the hash change a little bit or completely?
 
 ## Why this matters for Security:
 If a hacker tries to change a transaction from $10 to $100, the hash will change completely. The blockchain will see the mismatch and reject it immediately. This is called the **Avalanche Effect**.
+
+"Input A always equals Output B, but Input A+space equals something totally different."
