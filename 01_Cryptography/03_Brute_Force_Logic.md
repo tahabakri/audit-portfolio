@@ -1,36 +1,46 @@
-# Brute Force Hashing – Learning Notes
+# Notes: Brute Force Hashing (Alchemy Exercise)
 
-## What the task was
-* **Goal:** Given a specific hash, I needed to find which color from a list produced it.
-* **Problem:** Hashing is "One-Way" math. I cannot just reverse the hash to get the input.
-* **Advantage:** I knew the input *must* be one of 6 specific colors (Red, Green, Blue, etc.).
+## The Task
 
-## How I approached it
-1.  Since the list of possible inputs was small, I could try them all (Brute Force).
-2.  I wrote a loop to take each color, turn it into bytes, and hash it.
-3.  I compared that new hash to the target hash.
-4.  If they matched, I returned the color name.
+I needed to find an original color input from a given SHA-256 hash.
+The constraint was that the input must come from a specific list of 6 colors (Red, Green, Blue, etc).
 
-## The Logic (Code Snippet)
+## The Logic
+
+Since hash functions are one-way (cannot be reversed), I cannot "decrypt" the hash.
+However, because the list of possible inputs is small, I can use a "Brute Force" approach:
+
+1. Loop through every color in the list.
+2. Hash the color.
+3. Compare it to the target hash.
+
+## The Code Solution
+
 ```javascript
-// Loop through the known list of colors
-for (let i = 0; i < COLORS.length; i++) {
-    
-    // 1. Convert string to bytes
+const { sha256 } = require("ethereum-cryptography/sha256");
+const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
+
+const COLORS = ["red", "green", "blue", "yellow", "pink", "orange"];
+
+function findColor(hash) {
+  // Loop through list
+  for (let i = 0; i < COLORS.length; i++) {
+    // Convert string to bytes
     const byteColor = utf8ToBytes(COLORS[i]);
 
-    // 2. Hash the bytes
+    // Hash the bytes
     const hashedColor = sha256(byteColor);
 
-    // 3. Compare the hashes (converted to Hex strings for safety)
+    // Compare logic
     if (toHex(hashedColor) === toHex(hash)) {
-        return COLORS[i]; 
+      return COLORS[i];
     }
+  }
 }
-
 ```
 
-## Security note
+## Security Observation
 
-This brute-force method only worked because the "secret" was part of a very small list.
-If the input came from a list of millions of words (like a dictionary), a hacker could pre-calculate all the hashes (Rainbow Table) and still find the answer quickly.
+This only worked because the input space was tiny (6 options).
+If the input was a complex password, this loop would take millions of years.
+This shows why using common words as passwords is dangerous—attackers can pre-calculate hashes (Rainbow Tables).
