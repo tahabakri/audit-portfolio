@@ -26,3 +26,19 @@ Signing proves intent and identity because only the private key can produce a si
 ## Why recoveryBit exists
 
 Because two public keys can match one signature mathematically. The recovery bit (0 or 1) tells us which one is correct.
+
+## Hash First: Never sign raw messages.
+
+    *   *Why:* We sign the "Fingerprint," not the whole file. It's faster.
+
+## Sign Intentionally: The signature proves identity + intent.
+
+    *   *Why:* Only the private key can produce a signature that recovers to a specific public key.
+
+## Recovery Bit: Needed to recover the public key without sharing private key.
+
+    *   *Why:* Needed to recover the public key without sharing private key.
+
+## Public Key Verification: Confirms that the signer is the owner of the private key.
+
+    *   *Why:* Confirms that the signer is the owner of the private key.    
