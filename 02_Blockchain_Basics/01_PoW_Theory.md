@@ -21,3 +21,13 @@
 * **Context:** To cheat (double spend), I need to mine faster than everyone else combined.
 * **Auditor Question:** If I want to rewrite the last 10 blocks of Bitcoin, what physical resources do I need to buy?
 * **My Answer:** [Immutability (51% Attack Cost)...To rewrite history, you have to redo all the work for those 10 blocks plus catch up to the current chain. The energy cost would be billions of dollars.]
+
+### Mempool and Mining Process
+
+1. **Mempool** is a **waiting area** for transactions before they are included in a block.
+2. **addTransaction()** function adds transactions to the mempool (via `push()`).
+3. **mine()** function:
+   - Checks if mempool has transactions.
+   - Starts mining if transactions are available.
+   - Changes **nonce** until the **hash meets the target difficulty**.
+   - Successfully mined blocks are broadcasted to the network.

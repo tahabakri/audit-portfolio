@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/tahabakri/web3-security-notes#readme",
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "ethereum-cryptography": "^3.2.0"
   }
 }
