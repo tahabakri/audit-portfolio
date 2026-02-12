@@ -21,3 +21,22 @@
 ## 3. Auditor's Checklist (Bugs I Fixed)
 * **The "Ghost" Bug:** If I didn't check `mempool.length > 0`, the loop would try to grab transactions that don't exist, crashing the miner or corrupting the block with `undefined` data.
 * **The "String" Bug:** Hashing an object (JSON) directly gives a weird "Word Array." I must use `JSON.stringify()` to turn it into text, and `.toString()` to get the final hash string.
+
+
+## 4. Finalizing the Block
+* **Goal:** Once a block is mined successfully (hash meets target difficulty), it must be officially added to the chain.
+* **The Steps:**
+    1. **Include Transactions:** Bundle all transactions taken from the mempool into the block.
+    2. **Assign ID:** Set the block's index (usually `blockchain.length`).
+    3. **Store Hash:** Save the valid hash calculated during the mining process.
+    4. **Commit:** Push the completed block into the `blocks` array.
+* **Code:**
+    ```javascript
+    const block = {
+        id: blockchain.length,
+        transactions: transactions,
+        hash: validHash
+    };
+    blockchain.push(block);
+    ```
+```

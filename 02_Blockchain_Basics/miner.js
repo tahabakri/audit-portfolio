@@ -10,26 +10,42 @@ function addTransaction(transaction) {
 }
 
 function mine() {
-    let transactions = [];
+    // 1. Create the Block (The Envelope)
+    const block = {
+        id: blocks.length,  // The block ID
+        transactions: [],  // Transactions array
+        nonce: 0  // Start with nonce = 0
+    };
 
-    // 1. Fill the block (MAX 10 txs OR until mempool is empty)
-    while (transactions.length < MAX_TRANSACTIONS && mempool.length > 0) {
-        // .pop() takes the last transaction from the mempool
-        transactions.push(mempool.pop());
+    // 2. Add transactions from the mempool to the block
+    while (block.transactions.length < MAX_TRANSACTIONS && mempool.length > 0) {
+        const transaction = mempool.shift();  // Remove a transaction from mempool
+        block.transactions.push(transaction);  // Add to block's transactions array
     }
 
-    // 2. Create the block object with the ID and Transactions
-    const block = { id: blocks.length, transactions };
+    // 3. Perform Proof of Work (find a valid hash with a nonce)
+    while (true) {
+        const blockString = JSON.stringify(block);
+        const hash = SHA256(blockString).toString();
 
-    // 3. Hash the block (AND convert to string!)
-    const hash = SHA256(JSON.stringify(block)).toString();
+        // Convert the hash to BigInt for comparison
+        const intHash = BigInt(`0x${hash}`);
 
-    // 4. Add the hash to the block
-    block.hash = hash;
+        // Check if the hash is less than the TARGET_DIFFICULTY
+        if (intHash < TARGET_DIFFICULTY) {
+            block.hash = hash;  // Set the block's hash
+            break;  // Exit the loop
+        }
 
-    // 5. Push to the chain
+        // If not, increment the nonce and try again
+        block.nonce++;
+    }
+
+    // 4. Add the block to the blockchain (blocks array)
     blocks.push(block);
+    console.log(`Block mined with ID: ${block.id}, Hash: ${block.hash}, Nonce: ${block.nonce}`);
 }
+
 
 module.exports = {
     TARGET_DIFFICULTY,
