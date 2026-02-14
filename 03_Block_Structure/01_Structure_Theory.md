@@ -18,4 +18,4 @@ A block contains these key pieces of data:
     * Block 10's Hash changes completely.
     * Block 11 (which points to Block 10) now has a broken link.
     * The attacker must re-mine Block 10, Block 11, and every block after it.
-* **Result:** Changing history is mathematically impossible without "Trillions of years" of energy.
+* **Result:** Changing history is mathematically impossible without "Trillions of years" of energy...
