@@ -14,6 +14,12 @@ We must change the code so that the server requires a **Digital Signature** befo
 ## 4. Question for the Mentor
 Wait, if I use my Private Key to sign, do I have to send my Private Key to the server?
 
+**My Answer:** 
+NO. I never send my Private Key. I only send the **Digital Signature**. 
+
+**Security Note:** 
+A signature proves I authorized a specific message. Even if a hacker intercepts the signature, they cannot find my Private Key. However, they might try to "Replay" the signature. This is why we need a **Nonce** to make sure each signature is only used once.
+
 ## 5. The Fix   
     1.  The server should use my **Public Key** to verify my signature.
     2.  The server should never see my **Private Key**.
