@@ -25,3 +25,24 @@ A signature proves I authorized a specific message. Even if a hacker intercepts 
     2.  The server should never see my **Private Key**.
     3.  The server should never store my **Private Key**.
 
+## 6. The Fix: Implementing Asymmetric Authentication
+I successfully secured the application by implementing an ECDSA signature flow.
+
+### Final Technical Workflow:
+1. **Client Side:** 
+   - User enters a Private Key.
+   - App hashes the transaction data (amount + recipient).
+   - App signs the hash using `secp.sign(hash, privateKey, { recovered: true })`.
+   - App sends the `signature` and `recoveryBit` to the server.
+
+2. **Server Side:**
+   - Server re-hashes the transaction data.
+   - Server uses `secp.recoverPublicKey(hash, signature, recoveryBit)` to extract the signer's identity.
+   - Server compares the `recoveredAddress` to the `sender`.
+   - If they match, the transaction is processed.
+
+## 7. Residual Risk (Auditor's Note)
+Even though the server is now secure, the **Private Key** is still handled in a browser input field. In a real-world scenario, this is a risk because:
+1. Malicious browser extensions could steal the key.
+2. The user might accidentally "Paste" the key into a public place.
+**Solution:** In production, we should use a "Provider" like MetaMask so the website never touches the Private Key directly.
