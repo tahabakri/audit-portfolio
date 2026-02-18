@@ -3,15 +3,34 @@ class Transaction {
         this.inputUTXOs = inputUTXOs;
         this.outputUTXOs = outputUTXOs;
     }
-    execute() {
+   execute() {
+        // --- STAGE 1: COUNTING ---
+        let totalInput = 0;
         for (let i = 0; i < this.inputUTXOs.length; i++) {
-            const coin = this.inputUTXOs[i];
+            totalInput += this.inputUTXOs[i].amount;
+        }
 
-            if (coin.spent) {
-                throw new Error("Double Spend Attempt: This coin is already spent!");
+        let totalOutput = 0;
+        for (let i = 0; i < this.outputUTXOs.length; i++) {
+            totalOutput += this.outputUTXOs[i].amount;
+        }
+
+        // --- STAGE 2: ACCOUNTING CHECK ---
+        if (totalInput < totalOutput) {
+            throw new Error("Insufficient funds!");
+        }
+
+        // --- STAGE 3: THE POLICE CHECK (Check ALL first) ---
+        for (let i = 0; i < this.inputUTXOs.length; i++) {
+            if (this.inputUTXOs[i].spent) {
+                throw new Error("One of the coins is already spent!");
             }
-            coin.spend();
+        }
+
+        // --- STAGE 4: THE ACTION (Only happens if STAGE 1, 2, and 3 pass) ---
+        for (let i = 0; i < this.inputUTXOs.length; i++) {
+            this.inputUTXOs[i].spend();
         }
     }
 }
- module.exports = Transaction;
+module.exports = Transaction;
