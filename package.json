@@ -20,5 +20,9 @@
   "dependencies": {
     "crypto-js": "^4.2.0",
     "ethereum-cryptography": "^3.2.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
   }
 }
