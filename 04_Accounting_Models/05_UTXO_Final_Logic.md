@@ -23,3 +23,10 @@ I learned that real Bitcoin UTXOs are locked with a **"Locking Script"** (script
 - To spend them, the user must provide an **"Unlocking Script"** (Witness).
 - This usually requires a digital signature (from Week 1) and a Public Key.
 - **Auditor Note:** In Bitcoin, the "Address" is actually a hash of the Public Key, adding another layer of privacy and security.
+
+## 🛡️ The Auditor's "Missing Link"
+I realized that our current Transaction code has a **Critical Vulnerability**: It checks IF a coin is spent, but it doesn't check WHO is spending it.
+
+- **Double Spend Protection:** Works (via the `spent` flag).
+- **Theft Protection:** MISSING.
+- **The Fix:** In a real blockchain, the `execute()` function must verify a Digital Signature for EVERY input coin. The signature must prove that the person sending the transaction owns the Private Key for that coin's `owner` address.
