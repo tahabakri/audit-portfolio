@@ -31,6 +31,9 @@ class Transaction {
         for (let i = 0; i < this.inputUTXOs.length; i++) {
             this.inputUTXOs[i].spend();
         }
+
+        this.fee = totalInput - totalOutput;
+
     }
 }
 module.exports = Transaction;

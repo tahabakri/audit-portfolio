@@ -6,42 +6,32 @@ describe('Transaction', function () {
     const fromAddress = "1DBS97W3jWw6FnAqdduK1NW6kFo3Aid1N6";
     const toAddress = "12ruWjb4naCME5QhjrQSJuS5disgME22fe";
 
-    describe('with unspent input TXOs', () => {
-        const inputTXO1 = new TXO(fromAddress, 5);
-        const inputTXO2 = new TXO(fromAddress, 5);
-        const outputTXO1 = new TXO(toAddress, 10);
-        const tx = new Transaction([inputTXO1, inputTXO2], [outputTXO1]);
+    describe('with no remainder', () => {
+        const txo1 = new TXO(fromAddress, 5);
+        const txo2 = new TXO(fromAddress, 5);
+        const outputTXO1 = new TXO(toAddress, 7);
+        const outputTXO2 = new TXO(fromAddress, 3);
 
-        it('should execute without error', () => {
-            try {
-                tx.execute();
-            }
-            catch(ex) {
-                assert.fail(ex.message);
-                console.log(ex);
-            }
+        const tx = new Transaction([txo1, txo2], [outputTXO1, outputTXO2]);
+
+        tx.execute();
+
+        it('should have zero fee', () => {
+            assert.equal(tx.fee, 0);
         });
     });
 
-    describe('with a spent input TXO', () => {
-        const txo1 = new TXO(fromAddress, 5);
-        const txo2 = new TXO(fromAddress, 5);
-        const txo3 = new TXO(fromAddress, 5);
-        const outputTXO1 = new TXO(toAddress, 15);
+    describe('with some remainder', () => {
+        const txo1 = new TXO(fromAddress, 15);
+        const outputTXO1 = new TXO(toAddress, 7);
+        const outputTXO2 = new TXO(fromAddress, 6);
 
-        txo2.spend();
+        const tx = new Transaction([txo1], [outputTXO1, outputTXO2]);
 
-        const tx = new Transaction([txo1, txo2, txo3], [outputTXO1]);
+        tx.execute();
 
-        it('should throw an error on execute', () => {
-            let ex;
-            try {
-                tx.execute();
-            }
-            catch (_ex) {
-                ex = _ex;
-            }
-            assert(ex, "Did not throw an exception with a spent input TXO!");
+        it('should have the remainder as the fee', () => {
+            assert.equal(tx.fee, 2);
         });
     });
 });
