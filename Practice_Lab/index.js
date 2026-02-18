@@ -1,4 +1,4 @@
-const signMessage = require("./01_Cryptography/sign_message");
+const signMessage = require("../01_Cryptography/sign_message");
 const { toHex } = require("ethereum-cryptography/utils");
 
 async function run() {
