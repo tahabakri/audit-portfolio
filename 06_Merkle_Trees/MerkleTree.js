@@ -36,6 +36,47 @@ class MerkleTree {
         // This keeps repeating until only one node remains (the Merkle root)
         return this.getRoot(layer);
     }
+
+    getProof(index) {
+        let proof = []; // 1. This will store our {data, left} objects
+        let currentLayer = this.leaves;
+
+        // 2. We loop through layers, just like in getRoot
+        while (currentLayer.length > 1) {
+            const nextLayer = [];
+            
+            for (let i = 0; i < currentLayer.length; i += 2) {
+                const left = currentLayer[i];
+                const right = currentLayer[i + 1];
+
+                // --- We will write the "Neighbor Hunting" logic here ---
+                // Case A: Are we the left child?
+                if (i === index) {
+                    // If a right neighbor exists, add it to our proof
+                    if (right) {
+                        proof.push({ data: right, left: false });
+                    }
+                // Case B: Are we the right child?
+                } else if (i + 1 === index) {
+                    // Our neighbor is on the left
+                    proof.push({ data: left, left: true });
+                }
+                    
+                // Standard halving logic from before
+                if (right) {
+                    nextLayer.push(this.concat(left, right));
+                } else {
+                    nextLayer.push(left);
+                }
+            }
+
+            // 3. Move up and update our position (the index)
+            index = Math.floor(index / 2);
+            currentLayer = nextLayer;
+        }
+
+        return proof;
+    }
 }
 
 // I export the class so I can use it in other files or tests
