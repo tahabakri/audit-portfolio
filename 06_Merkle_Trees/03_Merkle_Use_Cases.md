@@ -15,3 +15,8 @@
 - **Prover (The User):** Holds the full data and the neighbor hashes. They do the "heavy lifting" to find the path.
 - **Verifier (The Smart Contract):** Only does the math of the path (~10-20 hashes). 
 - **Security Takeaway:** Merkle Trees move the "Work" to the user and keep the "Verification" on the blockchain. This is how we scale.
+
+## 4. The Logarithmic Advantage ($O(\log n)$)
+- **Linear Growth ($O(n)$):** If I have 1,000 transactions, I need 1,000 proofs. (Too slow/expensive).
+- **Logarithmic Growth ($O(\log n)$):** If I have 1,000 transactions, I only need ~10 proofs.
+- **Why it matters:** As a blockchain grows (more users), the cost to verify a single transaction stays nearly constant. This is how we achieve decentralization without bloating every user's computer.
