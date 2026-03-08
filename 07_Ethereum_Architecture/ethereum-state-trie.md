@@ -48,3 +48,7 @@ When auditing smart contracts, remember that:
 - This costs gas and affects the State Root.
 
 Understanding Trie structure helps identify gas optimization opportunities.
+
+## The Ethereum State Root
+
+The Ethereum State Root is the hash of the Merkle Patricia Trie that stores all Ethereum account states.
