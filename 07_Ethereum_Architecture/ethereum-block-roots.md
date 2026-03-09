@@ -72,3 +72,18 @@ Ethereum cannot use a simple Merkle Tree for state because account data (balance
 Rebuilding a full Merkle Tree for constant updates would be inefficient, so Ethereum uses a Merkle Patricia Trie for efficient state updates and proofs.
 
 State Root allows light clients to verify the balance or state of an address using a Merkle proof without downloading the entire Ethereum state.
+
+## Ethereum State Structure
+
+Ethereum stores global state using a Merkle Patricia Trie.
+
+Structure:
+address → account state
+
+Account state contains:
+- balance
+- nonce
+- storageRoot
+- codeHash
+
+The State Root in the block header commits to the entire trie and allows cryptographic proofs of account data.
