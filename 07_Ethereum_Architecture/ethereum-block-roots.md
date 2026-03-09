@@ -70,3 +70,5 @@ Key in trie → address; value in trie → account state (balance, nonce, storag
 
 Ethereum cannot use a simple Merkle Tree for state because account data (balance and nonce) changes after every transaction.  
 Rebuilding a full Merkle Tree for constant updates would be inefficient, so Ethereum uses a Merkle Patricia Trie for efficient state updates and proofs.
+
+State Root allows light clients to verify the balance or state of an address using a Merkle proof without downloading the entire Ethereum state.
