@@ -66,3 +66,7 @@ If any account state changes, the State Root changes.
 Transactions Root → what was executed  
 Receipts Root → what happened during execution  
 State Root → final world state after execution
+Key in trie → address; value in trie → account state (balance, nonce, storage, codeHash)
+
+Ethereum cannot use a simple Merkle Tree for state because account data (balance and nonce) changes after every transaction.  
+Rebuilding a full Merkle Tree for constant updates would be inefficient, so Ethereum uses a Merkle Patricia Trie for efficient state updates and proofs.
