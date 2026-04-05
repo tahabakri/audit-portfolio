@@ -1,0 +1,19 @@
+# Week 2 Retrospective: Data Structures & Accounting
+
+## 🛡️ The Auditor's Perspective: Week 2
+This week was about how blockchains remember things and how they prove things efficiently.
+
+### 1. Accounting Models
+- **What I learned:** Bitcoin uses **UTXOs** (like cash), and Ethereum uses **Accounts** (like a bank balance).
+- **The Security Catch:** I learned that Account models are vulnerable to **Replay Attacks** if they don't use a `nonce`. UTXO models prevent this by destroying the "coin" once it is used.
+- **My Reflection:** I realized that the order of code (Check -> Act) is the difference between a secure bank and a hacked one.
+
+### 2. Merkle Trees (The Efficiency King)
+- **The Goal:** Prove a transaction is in a block without downloading the whole block.
+- **The Math:** I mastered the $O(\log n)$ path. 
+- **What I found hardest:** [i found that server and client are 2 different things that need to be connected and prove the ownership of the data].
+- **Why it matters for Auditing:** Merkle Trees allow us to secure massive amounts of data with a single 32-byte **Root Hash**. If a leaf changes, the Root changes.
+
+### 3. Ethereum Tries
+- I learned that Ethereum uses **Patricia Merkle Tries** because balances change constantly. 
+- Unlike a standard Merkle Tree, a Trie is built for **fast retrieval and editing**.
