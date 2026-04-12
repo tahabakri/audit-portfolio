@@ -19,3 +19,10 @@
 - **Tool:** I used `parseInt(hexString)` to get the Decimal Wei.
 - **Conversion:** I divided the Wei by 10^18 (1 followed by 18 zeros) to find the human ETH value.
 - **Auditor Takeaway:** Always perform math in Wei to avoid "Precision Loss" or rounding bugs.
+
+## 🕵️ Anatomy of a Block (Auditor's Map)
+- **hash:** The identity of the current block.
+- **parentHash:** The identity of the previous block. If this link is broken, the chain is invalid.
+- **miner:** The address of the "Clerk" who did the work to write this block.
+- **stateRoot:** The "Snapshot" of all balances in the world at this moment.
+- **transactions:** The actual list of "Work Orders" that were processed.
