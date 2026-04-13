@@ -17,7 +17,12 @@
 ## 4. What to think
 "In Bitcoin, my balance was just a pile of unspent coins (UTXOs). In Ethereum, the blockchain acts like a real bank database. It has a specific 'row' for my address that stores my current balance and my current Nonce. This makes it much easier to write code, but I have to trust the Nonce to protect me from hackers."
 
-## 5. Overview
+## 5. Address Derivation (The Birth Rule)
+- **EOA Address:** Derived from the **Public Key** (which comes from the Private Key).
+- **Contract Address:** Derived from the **Creator's Address + Creator's Nonce**.
+- **Auditor Note:** Since addresses are predictable, I must be aware of "Address Squatting" where an attacker tries to claim a specific address before the honest developer can.
+
+## 6. Overview
 
 There are two types of accounts in Ethereum:
 
