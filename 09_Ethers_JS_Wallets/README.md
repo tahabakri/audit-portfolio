@@ -1,45 +1,109 @@
-# 👛 Let's Make Wallets
+# 👛 Ethereum Wallets & Signing
 
-This activity focuses on instantiating Ethereum wallets using two common methods: **Private Keys** and **Mnemonic Phrases**.
+This guide covers instantiating wallets and signing transactions using `ethers.js`.
 
 ---
 
-## 🎯 Your Goal
-Instantiate two Wallet instances using `ethers.js`.
+## 🎯 Stage 1: Let's Make Wallets
 
 ### 1. From a Private Key
 A **Private Key** is a 256-bit value used to authenticate you to the network. It's essentially your "master password" for an address.
 - **Used key:** `0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d`
 
-> [!CAUTION]
-> **Security Warning:** Never share your private key. Anyone with access to it can steal your funds. The odds of someone guessing your key are astronomically low ($2^{160}$ distinct addresses).
-
 ### 2. From a Mnemonic (Seed Phrase)
-A **Mnemonic Phrase** is a human-readable sequence of words that represents your private key (governed by BIP-039). 
+A **Mnemonic Phrase** (BIP-039) is a sequence of words representing your key.
 - **Used phrase:** `plate lawn minor crouch bubble evidence palace fringe bamboo laptop dutch ice`
 
-> [!IMPORTANT]
-> Mnemonics are even more critical than a single private key because **one mnemonic can generate many private keys** across multiple chains (BIP-044).
+---
+
+## ✍️ Stage 2: Signing Transactions
+
+Signing a transaction authenticates you to the network. It proves that you, as the owner of the private key, authorized the specific movement of funds or execution of code.
+
+### The Raw Transaction Breakdown
+When a transaction is signed and encoded (RLP), it looks like a long hexadecimal string.
+
+| Bytes | Meaning | Value in Example |
+| :--- | :--- | :--- |
+| `0x` | Hex Prefix | - |
+| `f86b` | RLP List Header | 107 bytes coming up |
+| `80` | Nonce | 0 |
+| `3b9aca00` | Gas Price | 1 Gwei |
+| `5208` | Gas Limit | 21,000 |
+| `dd0d...de92` | To Address | Recipient |
+| `0de...000` | Value | 1 Ether |
+| `80` | Data | None (Transfer) |
+| `1b` | v | Recovery ID / Chain ID |
+| `f503...e9b` | r | Sig coordinate |
+| `2711...7a4` | s | Sig coordinate |
 
 ---
 
 ## 🛠️ Implementation
 
-In `ethers.js`, the `Wallet` class manages the key pair and provides functions for signing Transactions.
+### Instantiation
+```javascript
+const wallet1 = new Wallet(privateKey);
+const wallet2 = Wallet.fromMnemonic(phrase);
+```
 
-| Method | Description |
+### Signing
+```javascript
+const signaturePromise = wallet1.signTransaction({
+    value: utils.parseEther('1'),
+    to: "0xdD0DC6FB59E100ee4fA9900c2088053bBe14DE92",
+    gasLimit: 21000,
+});
+```
+
+## 🔗 Stage 3: Connect & Broadcast
+
+Signing a transaction is only half the battle. To actually modify the blockchain, the transaction must be **broadcasted** to the network through a node.
+
+### What is a Provider?
+A **Provider** is an abstraction of a connection to the Ethereum network. It allows you to:
+*   Read state (balances, latest block).
+*   Broadcast signed transactions.
+*   Query smart contract logic.
+
+In this stage, we connect to a local **Ganache** instance for testing. When moving to production, you would simply point the provider to a mainnet node (like **Alchemy**).
+
+| Feature | Description |
 | :--- | :--- |
-| `new Wallet(privateKey)` | Creates a wallet from a 256-bit hex string. |
-| `Wallet.fromMnemonic(phrase)` | Creates a wallet from a seed phrase. |
+| **`Web3Provider`** | Wraps a standard EIP-1193 provider (like Ganache or MetaMask). |
+| **`sendTransaction`** | Takes a raw signed transaction (hex) and pushes it to the mempool. |
+| **`waitForTransaction`** | Awaits the block confirmation (mining) of a transaction. |
+
+---
+
+## 🛠️ Implementation
+
+### 1. The Provider Setup
+```javascript
+const provider = new providers.Web3Provider(ganacheProvider);
+```
+
+### 2. Broadcasting logic
+```javascript
+async function sendEther({ value, to }) {
+    const rawTx = await wallet.signTransaction({ value, to, ... });
+    return provider.sendTransaction(rawTx);
+}
+```
 
 ---
 
 ## 🧪 Testing
 
-To verify the addresses:
-1. Ensure `mocha` and `chai` are installed.
-2. Run the tests in the `test/` directory.
+Run the full suite:
+```bash
+# Test All Stages
+npx mocha 09_Ethers_JS_Wallets/test/
+```
 
-**Expected Addresses:**
-- **Wallet 1:** `0x5409ED021D9299bf6814279A6A1411A7e866A631`
-- **Wallet 2:** `0x88E9DD325BA8329dDD9825c1d24e8470b25575C1`
+### Flow Verification:
+1.  **Wallet** signs the work order locally.
+2.  **Provider** transmits the signed package to Ganache.
+3.  **Network** includes the transaction in a block (mines it).
+4.  **Balance** moves from `msg.sender` to the recipient.
+
