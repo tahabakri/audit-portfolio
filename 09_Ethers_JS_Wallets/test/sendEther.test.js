@@ -6,20 +6,20 @@ const { ganacheProvider } = require('../config');
 const provider = new ethers.providers.Web3Provider(ganacheProvider);
 
 describe('sendEther - Multiple Transactions', () => {
-    before(async () => {
+    it('should have mined exactly three blocks during this test', async () => {
+        const startBlock = await provider.getBlockNumber();
         const props = {
             value: ethers.utils.parseEther("1.0"),
             to: "0xdD0DC6FB59E100ee4fA9900c2088053bBe14DE92",
         }
-        // Send three transactions. 
-        // wallet.sendTransaction handles the nonce incrementing automatically.
+        
+        // Sequential awaits to ensure block production is captured accurately
         await sendEther(props);
         await sendEther(props);
         await sendEther(props);
-    });
-    
-    it('should have mined three blocks', async () => {
-        const blockNumber = await provider.getBlockNumber();
-        assert.equal(blockNumber, 3, "The block number should be 3 after 3 transactions");
+        
+        const endBlock = await provider.getBlockNumber();
+        const diff = endBlock - startBlock;
+        assert.equal(diff, 3, `Expected a difference of 3 blocks but got ${diff}`);
     });
 });

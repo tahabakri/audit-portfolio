@@ -124,16 +124,59 @@ async function sendEther({ value, to }) {
 }
 ```
 
+## 💸 Stage 5: Retrieve the Balance
+
+Once a Wallet is connected to a Provider, it can do more than just send transactions—it can also query state directly.
+
+### 🔍 Utility: `wallet.getBalance()`
+When you call `wallet.getBalance()`, the wallet uses its internal reference to the Provider to perform an `eth_getBalance` call for its own address.
+
+### 🛠️ Implementation
+```javascript
+function findMyBalance(privateKey) {
+    const wallet = new Wallet(privateKey, provider);
+    return wallet.getBalance();
+}
+```
+
+## 🎁 Stage 6: Charitable Donations
+
+In the final stage, we combine everything: Instantiation, Signing, Nonce Management, and Broadcasting to perform a batch operation.
+
+### 🎯 The Challenge: `donate`
+The goal is to send **at least 1 ETH** to every address in an array of charities. 
+
+### 🛠️ Implementation
+By using `charities.map`, we can create an array of promises. Each call to `wallet.sendTransaction` is handled by the provider to ensure the next valid nonce is used.
+
+```javascript
+async function donate(privateKey, charities) {
+    const wallet = new Wallet(privateKey, provider);
+    const donationPromises = charities.map((address) => {
+        return wallet.sendTransaction({
+            to: address,
+            value: utils.parseEther("1.0"),
+        });
+    });
+    return Promise.all(donationPromises);
+}
+```
+
 ---
 
 ## 🧪 Testing
 
-Run all tests:
+Run everyone's favorite command:
 ```bash
 npx mocha 09_Ethers_JS_Wallets/test/
 ```
 
-### Results:
-The tests now verify that sending **three** transactions in a row correctly increments the blockchain's block height to **3**, proving that each transaction had the correct, unique nonce.
+### 🏆 Final Recap:
+1.  **Stage 1 & 2:** Created identities from raw keys/mnemonics.
+2.  **Stage 3 & 4:** Mastered Providers and automated the "Double-Spend" protection (Nonces).
+3.  **Stage 5:** Queried the blockchain state directly.
+4.  **Stage 6:** Orchestrated a batch of transactions to modify state at scale.
+
+
 
 
