@@ -91,19 +91,49 @@ async function sendEther({ value, to }) {
 }
 ```
 
+## 🔢 Stage 4: The Account Nonce
+
+A **Nonce** is a unique "number used once" that tracks the total number of transactions sent from an account. It is critical for security to prevent **Replay Attacks** and **Double-Spending**.
+
+### The Double-Spend Problem
+Without a nonce, an attacker (like "Mallory") could capture your signed transaction and broadcast it multiple times, draining your account. The network rejects any transaction where the nonce doesn't match the expected next increment.
+
+### 🚀 Automation with `wallet.sendTransaction`
+Previously, we manually signed and then sent transactions. This fails for multiple sequential transactions unless we manually calculate the nonce. 
+
+Ethers provides `wallet.sendTransaction(tx)`, which handles everything:
+1.  **Nonce Management**: Calls `getTransactionCount("pending")` to find the next valid nonce.
+2.  **Property Population**: Automatically fills in `gasLimit`, `gasPrice`, and `chainId` using `populateTransaction`.
+3.  **Security**: Uses `shallowCopy` to ensure your original transaction object remains untouched.
+4.  **Signing & Broadcasting**: Signs and pushes to the network in one call.
+
+---
+
+## 🛠️ Implementation
+
+### 1. Connect Wallet to Provider
+```javascript
+const wallet = new Wallet(PRIVATE_KEY, provider);
+```
+
+### 2. The "One-Stop Shop" Call
+```javascript
+async function sendEther({ value, to }) {
+    // No manual signing needed; wallet handles it!
+    return wallet.sendTransaction({ value, to, ... });
+}
+```
+
 ---
 
 ## 🧪 Testing
 
-Run the full suite:
+Run all tests:
 ```bash
-# Test All Stages
 npx mocha 09_Ethers_JS_Wallets/test/
 ```
 
-### Flow Verification:
-1.  **Wallet** signs the work order locally.
-2.  **Provider** transmits the signed package to Ganache.
-3.  **Network** includes the transaction in a block (mines it).
-4.  **Balance** moves from `msg.sender` to the recipient.
+### Results:
+The tests now verify that sending **three** transactions in a row correctly increments the blockchain's block height to **3**, proving that each transaction had the correct, unique nonce.
+
 

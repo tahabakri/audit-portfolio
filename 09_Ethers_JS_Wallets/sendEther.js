@@ -4,24 +4,25 @@ const { ganacheProvider, PRIVATE_KEY } = require('./config');
 // Create a new web3 provider wrapping the ganache instance
 const provider = new providers.Web3Provider(ganacheProvider);
 
-// Connect the wallet to the provider so it can send transactions
+// Connect the wallet to the provider (this enables automatic nonce/gas management)
 const wallet = new Wallet(PRIVATE_KEY, provider);
 
 async function sendEther({ value, to }) {
     /**
-     * 💡 Goal: Broadcast the TX to Ethereum
+     * 💡 Goal: Add the Nonce (via wallet.sendTransaction)
      * 
-     * We sign the transaction and then use the provider to broadcast it.
+     * wallet.sendTransaction is a "one-stop shop":
+     * 1. It fetches the current nonce (pending)
+     * 2. It populates gasPrice and gasLimit if needed
+     * 3. It signs the transaction
+     * 4. It broadcasts it to the network
      */
-    const rawTx = await wallet.signTransaction({ 
+    return wallet.sendTransaction({ 
         value, 
         to, 
-        gasLimit: 0x5208, // 21000
-        gasPrice: 0x3b9aca00 // 1 Gwei
+        gasLimit: 0x5208,
+        gasPrice: 0x3b9aca00 
     });
-
-    // Send the raw transaction and return the transaction promise
-    return provider.sendTransaction(rawTx);
 }
 
 module.exports = sendEther;
