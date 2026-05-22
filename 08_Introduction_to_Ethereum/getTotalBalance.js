@@ -19,13 +19,13 @@ async function getTotalBalance(addresses) {
 
     const responses = await provider.send(requests);
 
-    let total = 0;
+    let total = BigInt(0);
 
     for (let res of responses) {
-        total += parseInt(res.result, 16);
+        total += BigInt(res.result);
     }
 
-    return total;
+    return total.toString();
 }
 
 module.exports = getTotalBalance;

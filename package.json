@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "test:08": "mocha ./08_Introduction_to_Ethereum/test/getTotalBalance.test.js ./08_Introduction_to_Ethereum/test/getBalance.test.js ./08_Introduction_to_Ethereum/test/getBlockNumber.test.js ./08_Introduction_to_Ethereum/test/getTotalTransactions.test.js --timeout 10000",
+    "test:09": "mocha ./09_Ethers_JS_Wallets/test/findEther.test.js \"./09_Ethers_JS_Wallets/test/!(findEther).test.js\" --timeout 10000",
+    "test": "npm run test:08 && npm run test:09"
+  },
   "dependencies": {
     "chai": "^6.2.2",
     "ethers": "^5.7.2",
