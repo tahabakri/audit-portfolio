@@ -9,5 +9,8 @@
     "ethers": "^5.7.2",
     "ganache-core": "^2.13.2",
     "mocha": "^11.7.5"
+  },
+  "devDependencies": {
+    "hardhat": "^3.5.1"
   }
 }

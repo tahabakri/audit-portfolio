@@ -32,6 +32,11 @@ It is the address calling the function right now.
 - This risk is called privilege escalation.
 - msg.sender must always be checked before powerful functions run.
 - If msg.sender is not checked — anyone can call that function.
+- Never store sensitive data on-chain.
+- Even `private` variables can be read by anyone 
+  reading raw blockchain storage.
+- `private` only prevents OTHER CONTRACTS from reading it.
+- This vulnerability is called on-chain data exposure.
 
 ## What Confused Me
 - How privilege escalation works if private keys are never 
