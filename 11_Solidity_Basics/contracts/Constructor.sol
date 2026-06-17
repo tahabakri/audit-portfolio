@@ -18,4 +18,8 @@ contract Constructor {
         x++;
     }
 
+    function add(uint y) external view returns (uint) {
+        return x + y;
+    }
+
 }
