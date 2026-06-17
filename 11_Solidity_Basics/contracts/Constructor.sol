@@ -4,14 +4,18 @@ pragma solidity ^0.8.4;
 contract Constructor {
 
     // state variable to store the number
-    // set by whoever deploys the contract
     uint public x;
 
     // constructor runs once at deployment
-    // _x is the number the deployer passes in
-    // we store it in x
+    // deployer passes in the starting value
     constructor(uint _x) {
         x = _x;
+    }
+
+    // anyone outside can call this function
+    // it adds 1 to x every time it is called
+    function increment() external {
+        x++;
     }
 
 }
