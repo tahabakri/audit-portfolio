@@ -13,5 +13,12 @@ contract Double {
         // example: if x = 5, this returns 10
         return x * 2;
     }
+    
+    // function with two parameters
+    // returns two numbers
+    // each number is x * 2 and y * 2
+    function double(uint x, uint y) external pure returns(uint, uint) {
+        return (x * 2, y * 2);
+    }
 
 }
