@@ -3,6 +3,8 @@
 // Each function uses ethers.js to call a contract function
 // ============================================
 
+const { ethers } = require('ethers');
+
 /**
  * Find the `value` stored in the contract
  * This is a READ — costs no gas, changes nothing
@@ -51,5 +53,19 @@ function setMessage(contract, signer) {
     return contract.connect(signer).modify("Hello");
 }
 
+/**
+ * Deposit at least 1 ether into the contract 
+ * payable = the function can RECEIVE ether
+ * We attach ether using the {value: ...} object as last argument
+ *
+ * @param {ethers.Contract} contract - ethers.js contract instance
+ * @return {promise} a promise of the deposit transaction 
+ */
+function deposit(contract) {
+    return contract.deposit({
+        value: ethers.parseEther("1")
+    });
+}
+
 // Export ALL functions together — only ONE module.exports allowed per file
-module.exports = { getValue, setValue, transfer, setMessage };
+module.exports = { getValue, setValue, transfer, setMessage, deposit };
