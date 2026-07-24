@@ -1,5 +1,11 @@
+// ============================================
+// This file connects JavaScript to our Solidity contracts
+// Each function uses ethers.js to call a contract function
+// ============================================
+
 /**
  * Find the `value` stored in the contract
+ * This is a READ — costs no gas, changes nothing
  *
  * @param {ethers.Contract} contract - ethers.js contract instance
  * @return {promise} a promise which resolves with the `value`
@@ -10,6 +16,7 @@ function getValue(contract) {
 
 /**
  * Modify the `value` stored in the contract
+ * This is a WRITE — costs gas, changes contract storage
  *
  * @param {ethers.Contract} contract - ethers.js contract instance
  * @return {promise} a promise of transaction
@@ -21,6 +28,7 @@ function setValue(contract) {
 /**
  * Transfer funds on the contract from the current signer 
  * to the friends address
+ * Uses the DEFAULT signer already connected to the contract
  *
  * @param {ethers.Contract} contract - ethers.js contract instance
  * @param {string} friend - a string containing a hexadecimal ethereum address
@@ -30,4 +38,18 @@ function transfer(contract, friend) {
     return contract.transfer(friend, 300);
 }
 
-module.exports = { getValue, setValue, transfer };
+/**
+ * Set the message on the contract using the signer passed in
+ * .connect(signer) SWITCHES which wallet is calling the function
+ * Needed here because the OWNER is blocked from calling modify()
+ *
+ * @param {ethers.Contract} contract - ethers.js contract instance
+ * @param {ethers.types.Signer} signer - ethers.js signer instance
+ * @return {promise} a promise of transaction modifying the `message`
+ */
+function setMessage(contract, signer) {
+    return contract.connect(signer).modify("Hello");
+}
+
+// Export ALL functions together — only ONE module.exports allowed per file
+module.exports = { getValue, setValue, transfer, setMessage };
