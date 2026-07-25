@@ -11,5 +11,6 @@ contract Owner {
     constructor() {
         owner = msg.sender;
     }
-
+    // runs when contract receives ETH with no extra data
+    receive() external payable {}
 }
