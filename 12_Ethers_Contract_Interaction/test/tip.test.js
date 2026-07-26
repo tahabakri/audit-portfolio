@@ -8,7 +8,8 @@ describe('Owner - Tip', function () {
 
     before(async () => {
         const Contract = await ethers.getContractFactory("Owner");
-        contract = await Contract.deploy();
+        const charity = ethers.Wallet.createRandom().address;
+        contract = await Contract.deploy(charity);
         await contract.waitForDeployment();
 
         const signers = await ethers.getSigners();

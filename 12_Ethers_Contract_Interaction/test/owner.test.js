@@ -4,8 +4,9 @@ const { assert } = require('chai');
 describe('Owner', function () {
     let contract;
     before(async () => {
+        const charity = ethers.Wallet.createRandom().address;
         const Contract = await ethers.getContractFactory("Owner");
-        contract = await Contract.deploy();
+        contract = await Contract.deploy(charity);
         await contract.waitForDeployment();
     });
 
