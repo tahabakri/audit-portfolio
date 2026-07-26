@@ -13,4 +13,10 @@ contract Owner {
     }
     // runs when contract receives ETH with no extra data
     receive() external payable {}
+
+     // anyone can send ETH here - it goes DIRECTLY to owner
+    function tip() public payable {
+        (bool s, ) = owner.call{ value: msg.value }("");
+        require(s);
+    }
 }
