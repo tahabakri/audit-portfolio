@@ -26,12 +26,14 @@ contract Owner {
         require(success);
     }
 
-    // address(this) = the address of THIS contract itself
-    // .balance = how much ETH this contract currently holds
-    // sends ALL of that ETH to the charity address
+    // VULNERABILITY: no access control - anyone can call this!
+    // selfdestruct sends ALL remaining ETH to charity
+    // historically this also deleted the contract's bytecode forever
+    // NOTE: due to EIP-6780 (2024 upgrade), modern EVM behavior
+    // only deletes bytecode if called in the SAME tx as creation
+    // otherwise it just sends the ether, contract remains active
     function donate() public {
-        (bool success, ) = charity.call{ value: address(this).balance }("");
-        require(success);
+        selfdestruct(payable(charity));
     }
 
 }
