@@ -9,7 +9,7 @@ describe("Sidekick - Encode With Signature", () => {
         hero = await Hero.deploy();
         await hero.waitForDeployment();
 
-        const Sidekick = await ethers.getContractFactory("Sidekick");
+        const Sidekick = await ethers.getContractFactory("Sidekick3WithSignature");
         sidekick = await Sidekick.deploy();
         await sidekick.waitForDeployment();
     });
