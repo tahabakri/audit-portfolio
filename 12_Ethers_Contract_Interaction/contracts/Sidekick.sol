@@ -2,9 +2,12 @@
 pragma solidity ^0.8.4;
 
 contract Sidekick {
-    function relay(address hero, bytes memory data) external {
-        // send whatever calldata we receive directly to the hero
-        (bool success, ) = hero.call(data);
+    function makeContact(address hero) external {
+        // sending random bytes (0x12345678) that DON'T match
+        // any real function selector on Hero
+        // since it doesn't match anything, this triggers
+        // Hero's fallback() function instead
+        (bool success, ) = hero.call(hex"12345678");
         require(success);
     }
 }
