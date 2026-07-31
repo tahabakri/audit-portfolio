@@ -5,7 +5,7 @@ describe('Sidekick - Manual Signature', function () {
     let sidekick, hero;
 
     beforeEach(async () => {
-        const Sidekick = await ethers.getContractFactory("Sidekick");
+        const Sidekick = await ethers.getContractFactory("Sidekick2Signature");
         sidekick = await Sidekick.deploy();
         await sidekick.waitForDeployment();
 
