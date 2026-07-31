@@ -35,3 +35,15 @@
   matches a REAL pattern called "circuit breaker" or "pause mechanism"
   bool paused + require(!paused) in every function
   This is SAFER than selfdestruct because it can be REVERSED
+
+  ## Update - Discovered Config Mismatch
+- hardhat.config.js was set to "shanghai" hardfork (older rules)
+  by an earlier auto-fix from the VS Code AI agent
+- This makes selfdestruct ALWAYS delete bytecode in tests
+- But REAL current Ethereum uses "Cancun" rules (EIP-6780)
+  where selfdestruct only deletes bytecode if called in the
+  SAME transaction as contract creation
+- IMPORTANT: my LOCAL tests might pass, but REAL mainnet
+  behavior could be DIFFERENT if config doesn't match reality
+- Auditor lesson: always verify test environment matches
+  actual target network rules
