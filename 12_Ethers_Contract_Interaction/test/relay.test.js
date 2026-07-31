@@ -5,7 +5,7 @@ describe('Sidekick - Relay Calldata', function () {
     let sidekick, hero;
 
     beforeEach(async () => {
-        const Sidekick = await ethers.getContractFactory("Sidekick");
+        const Sidekick = await ethers.getContractFactory("Sidekick4Relay");
         sidekick = await Sidekick.deploy();
         await sidekick.waitForDeployment();
 
@@ -13,7 +13,7 @@ describe('Sidekick - Relay Calldata', function () {
         hero = await Hero.deploy();
         await hero.waitForDeployment();
 
-        const calldata = hero.interface.encodeFunctionData('alert', [5, true]);
+        const calldata = hero.interface.encodeFunctionData('alert(uint256,bool)', [5, true]);
         const heroAddress = await hero.getAddress();
         await sidekick.relay(heroAddress, calldata);
     });
