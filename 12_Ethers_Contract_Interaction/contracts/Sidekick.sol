@@ -2,12 +2,9 @@
 pragma solidity ^0.8.4;
 
 contract Sidekick {
-    function sendAlert(address hero, uint enemies, bool armed) external {
-        // signature must use uint256, not uint - and no spaces after commas
-        (bool success, ) = hero.call(
-            abi.encodeWithSignature("alert(uint256,bool)", enemies, armed)
-        );
-
+    function relay(address hero, bytes memory data) external {
+        // send whatever calldata we receive directly to the hero
+        (bool success, ) = hero.call(data);
         require(success);
     }
 }

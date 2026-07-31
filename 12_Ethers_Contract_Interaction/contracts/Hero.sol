@@ -10,6 +10,8 @@ contract Hero {
         bool armed;
     }
 
+    uint lastContact;
+
     function alert(uint enemies, bool armed) external {
         ambush = Ambush(true, enemies, armed);
     }
