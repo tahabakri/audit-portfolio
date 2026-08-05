@@ -30,3 +30,15 @@
   BLOCKCHAIN STATE temporarily (just for the test run duration)
 - Better analogy: like a "System Restore Point" for the
   ENTIRE blockchain state, not just code files
+
+  ## Full Test Suite Built
+- Tested owner is set correctly at deployment
+- Tested withdraw() rejects amounts over 0.1 ETH
+- Tested withdrawAll() rejects non-owner callers
+- Tested destroyFaucet() rejects non-owner callers
+- All 4 tests passing - confirms onlyOwner protection works correctly
+
+## Security Thoughts
+- This FaucetV2 fixes the vulnerability from the ORIGINAL
+  Faucet.sol built earlier (unlimited withdrawals with no owner check)
+- Now withdrawAll/destroyFaucet require onlyOwner - real fix applied

@@ -4,8 +4,6 @@ const { ethers } = require('hardhat');
 
 describe('FaucetV2', function () {
 
-    // reusable setup function - loadFixture reuses this efficiently
-    // instead of redeploying manually in every single test
     async function deployContractAndSetVariables() {
         const Faucet = await ethers.getContractFactory('FaucetV2');
         const faucet = await Faucet.deploy();
@@ -25,6 +23,16 @@ describe('FaucetV2', function () {
     it('should not allow withdrawals above .1 ETH at a time', async function () {
         const { faucet, withdrawAmount } = await loadFixture(deployContractAndSetVariables);
         await expect(faucet.withdraw(withdrawAmount)).to.be.reverted;
+    });
+
+    it('should fail when a non-owner tries to withdrawAll', async function () {
+        const { faucet, other } = await loadFixture(deployContractAndSetVariables);
+        await expect(faucet.connect(other).withdrawAll()).to.be.reverted;
+    });
+
+    it('should fail when a non-owner tries to destroyFaucet', async function () {
+        const { faucet, other } = await loadFixture(deployContractAndSetVariables);
+        await expect(faucet.connect(other).destroyFaucet()).to.be.reverted;
     });
 
 });
