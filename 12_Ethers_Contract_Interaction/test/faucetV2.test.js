@@ -35,4 +35,14 @@ describe('FaucetV2', function () {
         await expect(faucet.connect(other).destroyFaucet()).to.be.reverted;
     });
 
+    it('should destroy the contract when owner calls destroyFaucet', async function () {
+    const { faucet, owner } = await loadFixture(deployContractAndSetVariables);
+    const faucetAddress = await faucet.getAddress();
+    await faucet.connect(owner).destroyFaucet();
+    const bytecode = await ethers.provider.getCode(faucetAddress);
+    expect(bytecode).to.equal("0x");
+    });
+
+    
+
 });
