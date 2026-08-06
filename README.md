@@ -11,6 +11,7 @@ my progress in Blockchain and Smart Contract Auditing.
 - **Week 3:** Ethereum, ethers.js, Block Explorer ✅
 - **Week 4:** Solidity, Smart Contracts, Access Control, Contract Communication ✅
 - **Week 5:** In Progress
+
 ## 📁 Repository Structure
 - `01_Cryptography`: Hashing, Private/Public Keys, Digital Signatures.
 - `02_Blockchain_Basics`: Mining, Proof of Work, Difficulty.
