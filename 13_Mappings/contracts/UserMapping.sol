@@ -24,4 +24,21 @@ contract UserMapping {
         users[msg.sender].isActive = true;
     }
 
+    // transfers balance from msg.sender to another user
+    function transfer(address _to, uint _amount) external {
+        // sender must be an ACTIVE user
+        require(users[msg.sender].isActive, "You are not an active user");
+
+        // recipient must ALSO be an ACTIVE user
+        // otherwise we'd add balance to someone who doesn't officially exist
+        require(users[_to].isActive, "Recipient is not an active user");
+
+        // sender must have ENOUGH balance to send
+        require(users[msg.sender].balance >= _amount, "Insufficient balance");
+
+        // subtract from sender, add to recipient
+        users[msg.sender].balance -= _amount;
+        users[_to].balance += _amount;
+    }
+
 }
