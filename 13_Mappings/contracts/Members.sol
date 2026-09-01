@@ -30,6 +30,15 @@ contract Members {
         return members[_addr];
     }
 
+    // removes a member - ONLY the owner can call this
+    // sets their mapping value back to FALSE
+    // this is MUCH CHEAPER than array removal - no shifting elements!
+    // arrays require moving EVERY element after the removed one
+    // mappings just flip ONE value directly - no extra work needed
+    function removeMember(address _addr) external onlyOwner {
+        members[_addr] = false;
+    }
+
     // REUSABLE access control check
     // any function using "onlyOwner" runs THIS check first
     // if msg.sender is NOT owner, the whole transaction reverts

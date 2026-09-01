@@ -39,3 +39,15 @@
 - IMPORTANT: private mappings can STILL be read from raw blockchain
   storage by anyone - private only blocks OTHER CONTRACTS from
   reading through normal Solidity calls
+
+  ## removeMember Function
+- Added removeMember() - the "undo" for addMember()
+- Sets mapping value back to FALSE
+- Protected with onlyOwner (same access control as addMember)
+
+## Key Lesson - Mappings vs Arrays for Removal
+- Arrays: removing an item requires SHIFTING every element after it
+  (expensive - many storage operations)
+- Mappings: removing is just flipping ONE value to false
+  (cheap - single operation, no shifting needed)
+- This is a REAL cost/efficiency advantage mappings have over arrays
