@@ -30,3 +30,12 @@
   whether someone ELSE used a template CORRECTLY
 - AI should be used to VERIFY/EXPLAIN, not WRITE code for me
   before I've attempted it myself
+
+  ## isMember Function
+- Manually wrote a getter function that mimics the auto-generated one
+- Confirms: even though `members` is public (auto-getter exists),
+  you CAN write your own custom getter function too
+- Useful when: mapping is PRIVATE, or you want a different function name
+- IMPORTANT: private mappings can STILL be read from raw blockchain
+  storage by anyone - private only blocks OTHER CONTRACTS from
+  reading through normal Solidity calls
