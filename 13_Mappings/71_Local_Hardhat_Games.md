@@ -30,3 +30,14 @@
   to FULLY complete before moving to the NEXT line
 - Without await, transactions might run OUT OF ORDER, causing
   win() to fail because x/y aren't set YET
+
+  ## Game 3 - SOLVED
+- Contract: uint8 y = 210 (fixed value)
+- win(uint8 x) requires: x + y == 255 (inside unchecked block)
+- SOLUTION: solved backward from require condition
+  x + 210 = 255
+  x = 255 - 210 = 45
+- await game.win(45);
+- Introduced unchecked{} keyword - turns OFF automatic
+  overflow protection, allowing the OLD wrapping behavior
+  (connects back to earlier lessons on integer overflow)
