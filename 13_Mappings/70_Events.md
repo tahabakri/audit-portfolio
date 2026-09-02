@@ -45,3 +45,5 @@
 - Like logging a message that the outside world can subscribe to
 - CHEAP, efficient, and exactly what frontend dApps need to
   display real-time updates
+
+  
