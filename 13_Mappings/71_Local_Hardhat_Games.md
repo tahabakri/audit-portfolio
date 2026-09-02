@@ -41,3 +41,31 @@
 - Introduced unchecked{} keyword - turns OFF automatic
   overflow protection, allowing the OLD wrapping behavior
   (connects back to earlier lessons on integer overflow)
+
+  ## Game 4 - SOLVED
+- Contract: uint8 y = 210, needed sum == 10
+- REAL overflow puzzle: x + 210 must WRAP AROUND to land on 10
+- Math: 210 + 56 = 266, uint8 max is 255 (256 total values)
+  266 - 256 = 10 ✓
+- SOLUTION: game.win(56)
+
+## Game 5 - SOLVED
+- Contract used mappings for balances AND allowances
+- giveMeAllowance() had NO restrictions - users can grant
+  THEMSELVES unlimited allowance (REAL vulnerability pattern)
+- SOLUTION:
+  await game.giveMeAllowance(10000);
+  await game.mint(10000);
+  await game.win();
+
+## ALL 5 GAMES COMPLETED
+- Game1: no conditions, direct call
+- Game2: two sequential setter calls
+- Game3: backward math solving (uint8 overflow)
+- Game4: overflow WRAPAROUND math
+- Game5: self-granted allowance vulnerability
+
+## Real Auditor Insight
+- Game5's giveMeAllowance() is a REAL vulnerability pattern -
+  users should NEVER be able to self-grant unlimited permissions
+- This is the EXACT type of bug real audits catch
