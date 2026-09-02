@@ -19,3 +19,14 @@
 - This is CLOSER to actual deployment workflow than just
   running hardhat tests - deploying to a REAL running node,
   then interacting with the deployed contract separately
+
+  ## Game 2 - SOLVED
+- Contract required: x > 0, y > 0, AND x + y == 50
+- SOLUTION: 
+  await game.setX(30);
+  await game.setY(20);
+  const tx = await game.win();
+- CONFIRMED understanding of await: waits for EACH transaction
+  to FULLY complete before moving to the NEXT line
+- Without await, transactions might run OUT OF ORDER, causing
+  win() to fail because x/y aren't set YET
