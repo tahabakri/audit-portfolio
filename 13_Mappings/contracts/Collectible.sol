@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 /**
  * @title Collectible
- * @dev Simple collectible contract demonstrating ownership, access control, and events.
+ * @dev Simple collectible contract demonstrating ownership, access control, events, and purchase mechanics.
  */
 contract Collectible {
 
@@ -13,6 +13,10 @@ contract Collectible {
     // Tracks the CURRENT owner of this collectible.
     // Making it 'public' automatically generates a getter function: owner()
     address public owner;
+
+    // Tracks the current asking price in wei.
+    // A price of 0 means the collectible is NOT currently for sale.
+    uint256 public price;
 
     // ==========================================
     // EVENTS
@@ -28,6 +32,9 @@ contract Collectible {
 
     // Emitted when the collectible is marked for sale
     event ForSale(uint256 price, uint256 timestamp);
+
+    // Emitted when a purchase occurs
+    event Purchase(uint256 amount, address buyer);
 
     // ==========================================
     // CONSTRUCTOR
@@ -67,8 +74,35 @@ contract Collectible {
      */
     function markPrice(uint256 askingPrice) external {
         require(msg.sender == owner, "Not the owner");
+        price = askingPrice;
         emit ForSale(askingPrice, block.timestamp);
     }
-    
 
+    /**
+     * @notice Allows a buyer to purchase the collectible at the asking price.
+     * payable allows this function to receive ETH (msg.value).
+     */
+    function purchase() external payable {
+        // Item MUST be marked for sale (price > 0) before purchase is allowed
+        require(price > 0, "Not for sale");
+
+        // Buyer MUST send EXACTLY the asking price - no less, no more
+        require(msg.value == price, "Incorrect price");
+
+        // Cache the seller (current owner) before updating storage
+        address seller = owner;
+
+        // Reset price back to 0 - item is NO LONGER for sale
+        price = 0;
+
+        // Transfer ownership to the buyer
+        owner = msg.sender;
+
+        // Send payment directly to the seller
+        (bool success, ) = seller.call{ value: msg.value }("");
+        require(success, "Payment failed");
+
+        // Log this purchase permanently
+        emit Purchase(msg.value, msg.sender);
+    }
 }
