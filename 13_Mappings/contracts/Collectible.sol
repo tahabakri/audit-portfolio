@@ -25,16 +25,16 @@ contract Collectible {
     // They are cheap to emit and useful for off-chain listeners (dApps, indexers, unit tests).
 
     // Emitted ONCE when the contract is deployed (like a birth certificate / genesis record)
-    event Deployed(address owner);
+    event Deployed(address indexed owner);
 
     // Emitted whenever ownership changes from one address to another
-    event Transfer(address originalOwner, address newOwner);
+    event Transfer(address indexed originalOwner, address indexed newOwner);
 
     // Emitted when the collectible is marked for sale
-    event ForSale(uint256 price, uint256 timestamp);
+    event ForSale(uint256 indexed price, uint256 indexed timestamp);
 
     // Emitted when a purchase occurs
-    event Purchase(uint256 amount, address buyer);
+    event Purchase(uint256 indexed amount, address indexed buyer);
 
     // ==========================================
     // CONSTRUCTOR
