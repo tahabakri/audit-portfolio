@@ -26,6 +26,9 @@ contract Collectible {
     // Emitted whenever ownership changes from one address to another
     event Transfer(address originalOwner, address newOwner);
 
+    // Emitted when the collectible is marked for sale
+    event ForSale(uint256 price, uint256 timestamp);
+
     // ==========================================
     // CONSTRUCTOR
     // ==========================================
@@ -57,5 +60,15 @@ contract Collectible {
         // LOGGING: Emit the Transfer event so off-chain apps and indexers know ownership moved
         emit Transfer(originalOwner, recipient);
     }
+
+    /**
+     * @notice Marks the collectible for sale with an asking price.
+     * @param askingPrice The price in wei.
+     */
+    function markPrice(uint256 askingPrice) external {
+        require(msg.sender == owner, "Not the owner");
+        emit ForSale(askingPrice, block.timestamp);
+    }
+    
 
 }
