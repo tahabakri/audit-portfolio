@@ -90,3 +90,17 @@
 
 - payable can be added to a constructor, not just regular functions
 - ETH sent during deployment becomes part of the contract's balance
+
+## Approve - Completed
+
+- Only the arbiter can call approve()
+- Sends entire contract balance to beneficiary using .call
+- Sets isApproved to true after successful transfer
+- Confirmed: 3 tests passing
+
+## Security Thoughts
+
+- No check preventing approve() from being called TWICE
+- After first approval, balance is 0, so second call would send
+  0 ETH but isApproved would already be true anyway
+- Worth considering: should there be a require(!isApproved) guard?
