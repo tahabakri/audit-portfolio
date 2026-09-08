@@ -1,0 +1,69 @@
+# 76 — Escrow Basics
+
+## What I Did
+
+- Built Escrow.sol with three public address variables:
+  depositor, beneficiary, arbiter
+
+## What I Learned
+
+- Escrow = an agreement where funds are held until a third party
+  approves the release
+- Three roles:
+  - depositor: pays into the escrow
+  - beneficiary: receives the funds once approved
+  - arbiter: the only one who can approve/release the funds
+- Real world use cases: real estate deals, charity donations,
+  marketplace transactions
+
+## Security Thoughts
+
+- The arbiter role is a single point of trust/failure - if the
+  arbiter's key is compromised, funds could be released incorrectly
+- Auditor question: is there any way to change the arbiter after
+  deployment? If so, who can do that?
+
+## What Confused Me
+
+- Initially compared it to a Faucet (anyone withdraws freely)
+- Correction: Escrow is DIFFERENT - only the ARBITER decides
+  WHEN to release funds, based on conditions being met
+- More like a real estate deal: buyer deposits, seller provides
+  the good/service, arbiter verifies and releases payment
+
+## Questions I Still Have
+
+- Can the depositor cancel/withdraw if the arbiter never approves?
+- Or is the money locked forever without arbiter action?
+- Need to clarify: does money move on its own after arbiter
+  approval, or does someone need to call a separate release
+  function?
+- In real-world escrow, who decides what "conditions met" means?
+
+## Why All These Steps (Big Picture)
+
+- Building a system where money moves AUTOMATICALLY based on
+  rules, without needing a bank or lawyer to approve manually
+- Each step builds towards that goal:
+  - depositor/beneficiary/arbiter variables = WHO is involved
+    in this agreement
+  - escrow.sol = the rulebook that defines what can happen
+  - Tests check that the rules are set up correctly before
+    anyone deposits money
+- Next steps will add the ACTUAL rules: how to deposit, what
+  conditions trigger release, who can trigger it
+- Eventually aiming for a system where:
+  - Buyer deposits without talking to seller (depositor)
+  - Seller provides goods/service without trusting buyer (beneficiary)
+  - Arbiter just verifies when done
+  - Money moves automatically without anyone needing to approve
+    at the moment of transfer
+- That's the core of decentralized finance (DeFi) - using code
+  to replace traditional intermediaries with transparent,
+  automatable trust
+
+## Final Confirmed Flow
+
+1. Depositor sends ETH to Escrow contract
+2. Arbiter calls approve() when conditions are met
+3. Money moves AUTOMATICALLY from Escrow to Beneficiary
