@@ -67,3 +67,14 @@
 1. Depositor sends ETH to Escrow contract
 2. Arbiter calls approve() when conditions are met
 3. Money moves AUTOMATICALLY from Escrow to Beneficiary
+
+## Constructor Storage - Completed
+
+- Constructor takes arbiter and beneficiary as arguments
+- depositor is automatically set to msg.sender (whoever deploys)
+- Confirmed: 3 tests passing, verifying all three addresses stored correctly
+
+## What Confused Me
+
+- Placed constructor OUTSIDE the contract's closing brace initially
+- Fixed by moving it inside the contract body
