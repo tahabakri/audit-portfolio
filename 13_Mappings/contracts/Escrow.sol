@@ -6,7 +6,7 @@ contract Escrow {
     address public beneficiary;
     address public arbiter;
 
-    constructor(address _arbiter, address _beneficiary) {
+    constructor(address _arbiter, address _beneficiary) payable {
         arbiter = _arbiter;
         beneficiary = _beneficiary;
         depositor = msg.sender;

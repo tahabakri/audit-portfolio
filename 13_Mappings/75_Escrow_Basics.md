@@ -78,3 +78,15 @@
 
 - Placed constructor OUTSIDE the contract's closing brace initially
 - Fixed by moving it inside the contract body
+
+## Funding - Completed
+
+- Made constructor payable
+- Depositor sends ETH at deployment time, stored as the
+  contract's balance
+- Confirmed: 4 tests passing, including balance verification
+
+## What I Learned
+
+- payable can be added to a constructor, not just regular functions
+- ETH sent during deployment becomes part of the contract's balance
