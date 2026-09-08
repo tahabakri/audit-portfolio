@@ -104,3 +104,8 @@
 - After first approval, balance is 0, so second call would send
   0 ETH but isApproved would already be true anyway
 - Worth considering: should there be a require(!isApproved) guard?
+
+## Lock It Down - Confirmed
+- require(msg.sender == arbiter) already protects approve()
+- Non-arbiter calls revert, arbiter calls succeed
+- Confirmed via dedicated security tests
