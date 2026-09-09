@@ -109,3 +109,34 @@
 - require(msg.sender == arbiter) already protects approve()
 - Non-arbiter calls revert, arbiter calls succeed
 - Confirmed via dedicated security tests
+
+## Approved Event - Completed
+- Added event Approved(uint amount)
+- Emitted inside approve() after successful transfer
+- Confirmed: event carries the correct deposit amount
+
+## What I Learned
+- Event declarations don't have a body {} like functions -
+  they just end with a semicolon
+- emit happens inside a function, separately from the declaration
+- Solidity doesn't require events to be declared before use,
+  but it's conventional to declare them near the top
+
+  ## Deploy Script - Completed
+- Built deploy.js using ethers.ContractFactory
+- Passes constructor arguments (arbiter, beneficiary) plus
+  a {value: 1 ether} override for the deposit
+- Confirmed: 5 tests passing
+
+## What I Learned
+- ContractFactory bundles abi + bytecode + signer needed to deploy
+- deploy() sends constructor args first, then an overrides object
+  for things like value, gasLimit, nonce
+
+## Approve Script - Completed
+- Built approve.js calling contract.connect(arbiterSigner).approve()
+- Confirmed: 2 tests passing
+
+## What I Learned
+- .connect(signer) is used to call a contract function AS a
+  specific wallet - this makes msg.sender equal that signer's address
