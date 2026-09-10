@@ -34,3 +34,13 @@
   (like one business card: name, phone, email)
 - Array = a list holding MANY of those structs, in order
   (like a rolodex full of business cards)
+
+  ## Data Location - Storage vs Memory vs Calldata
+- storage = permanent, on the blockchain, expensive (state variables)
+- memory = temporary, exists only during function execution, cheaper
+- calldata = read-only temporary, used for function inputs, cheapest
+
+## Why books needs no keyword but _title/_author need memory
+- books is a STATE VARIABLE - automatically lives in storage
+- _title/_author are FUNCTION PARAMETERS - temporary values,
+  MUST explicitly specify memory or calldata for reference types
