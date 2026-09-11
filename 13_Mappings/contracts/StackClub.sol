@@ -7,9 +7,21 @@ contract StackClub {
     // (Last-In-First-Out - though we're not popping in this stage)
     address[] public members;
 
+    // adds the deployer as the first member
+    constructor() {
+        members.push(msg.sender);
+    }
+
+    function removeLastMember() external {
+        require(isMember(msg.sender), "Not a member");
+        members.pop();
+    }
+
     // adds a new address to the END of the members list
     function addMember(address _member) external {
+        require(isMember(msg.sender), "Not a member");
         members.push(_member);
+
     }
 
     // checks if a given address exists ANYWHERE in the members list
