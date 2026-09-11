@@ -53,3 +53,15 @@
   - But the core concepts (loops, indexing, .length) remain
     the same - just more nested
 - How do arrays compare to mappings?
+
+## Storage Arrays - Filter Even Numbers
+- Built evenNumbers storage array with .push()
+- filterEven() loops through input, checks % 2 == 0 for even,
+  pushes matches into permanent storage
+- Confirmed: 2 tests passing
+
+## What I Learned
+- push() adds an element to the END of a storage array
+- length automatically updates as you push
+- % (modulo) gives the remainder of division - useful for
+  checking even/odd (number % 2 == 0 means even)
