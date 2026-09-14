@@ -10,7 +10,8 @@ my progress in Blockchain and Smart Contract Auditing.
 - **Week 2:** UTXO Accounting & Merkle Trees ✅
 - **Week 3:** Ethereum, ethers.js, Block Explorer ✅
 - **Week 4:** Solidity, Smart Contracts, Access Control, Contract Communication ✅
-- **Week 5:** In Progress
+- **Week 5:** Mappings, Events, Arrays, Structs, Escrow System, DApp Frontend ✅
+- **Week 6:** In Progress
 
 ## 📁 Repository Structure
 - `01_Cryptography`: Hashing, Private/Public Keys, Digital Signatures.
