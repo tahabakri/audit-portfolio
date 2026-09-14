@@ -26,3 +26,7 @@ my progress in Blockchain and Smart Contract Auditing.
 - `10_Block_Explorer`: Live Ethereum block explorer using Alchemy SDK.
 - `11_Solidity_Basics`: Data types, functions, modifiers, constructors.
 - `12_Ethers_Contract_Interaction`: Access control, contract-to-contract calls, calldata, testing.
+- `13_Mappings`: Mappings, nested mappings, structs, events, arrays, storage vs memory.
+- `14_Contract_Puzzles`: Security challenges, bypasses, EVM execution edge cases.
+- `15_Local_Hardhat_Games`: Hardhat local network debugging, state manipulation, event testing.
+- `17_Escrow_DApp`: Full-stack decentralized Escrow application with React, ethers.js, and Hardhat.
