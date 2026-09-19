@@ -107,10 +107,88 @@ The two important rules currently are:
 - The contract currently holds ETH after people RSVP, so an auditor question for the next stage is:
   > *Where does this ETH go, and how does it come back out?*
 
-## Questions I Still Have
+## Questions I Still Have (Answered in Next Step)
 
-- How will the contract split the final expense between all attendees?
-- Why do we need the attendee array during the next stage?
-- Who will be allowed to trigger the final payment?
-- How will refunds or leftover ETH work?
-- Could looping through a very large attendee array eventually create a gas problem?
+- How will the contract split the final expense between all attendees? → By subtracting the bill from the contract balance and dividing by `attendees.length`.
+- Why do we need the attendee array during the next stage? → To iterate over every attendee address to send their refund.
+- Who will be allowed to trigger the final payment? → Currently anyone (an auditor security concern!).
+- How will refunds or leftover ETH work? → `address(this).balance / attendees.length`.
+- Could looping through a very large attendee array eventually create a gas problem? → Yes, classic unbounded loop / block gas limit DoS.
+
+---
+
+## Pay the Bill
+
+### What I Did
+
+- Added an external `payBill(address venue, uint amount)` function.
+- Paid the venue from the ETH pooled inside the contract.
+- Checked that the venue payment succeeded.
+- Read the remaining contract balance.
+- Divided the remaining ETH by `attendees.length`.
+- Looped through the attendee array.
+- Refunded each attendee an equal share.
+- Checked that every refund succeeded.
+- Ran a separate `PartyPayBill.test.js` test file.
+- All 3 payBill tests passed.
+
+### What Confused Me
+
+- I understood the math before I could write the Solidity syntax.
+- I struggled to remember `attendees.length`.
+- I struggled to remember `attendees[i]` inside the loop.
+- I needed to build the function one line at a time.
+
+### What I Think I Understand Now
+
+If the contract has:
+
+```text
+8 ETH pooled
+4 ETH bill
+4 attendees
+```
+
+then:
+
+- venue gets 4 ETH
+- 4 ETH remains
+- 4 / 4 = 1 ETH refunded to each attendee
+
+This:
+
+```solidity
+uint remaining = address(this).balance;
+```
+
+gets the ETH left after paying the venue.
+
+This:
+
+```solidity
+uint share = remaining / attendees.length;
+```
+
+calculates each attendee's refund.
+
+This:
+
+```solidity
+attendees[i]
+```
+
+means the current attendee while looping through the array.
+
+### Security Thoughts
+
+- `payBill()` currently has no access control.
+- Any external caller can choose the venue and bill amount.
+- External ETH calls can fail, so their return values are checked.
+- A reverting attendee could cause the whole refund transaction to revert.
+- Looping over a very large attendee array could eventually create a gas/DoS issue.
+- Integer division may leave tiny leftover dust if the remainder does not divide evenly.
+
+**Auditor question:**
+
+> Who should actually be allowed to trigger `payBill()`?
+
