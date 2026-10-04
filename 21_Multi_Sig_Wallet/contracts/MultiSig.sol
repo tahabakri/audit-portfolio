@@ -17,6 +17,14 @@ contract MultiSig {
         return transactions.length;
     }
 
+    function addTransaction(address _destination, uint256 _value) public returns (uint256) {
+        uint256 txId = transactions.length;
+        Transaction memory transaction = Transaction( _destination, _value, false);
+        transactions.push(transaction);
+        return txId;
+
+    }
+
     constructor(address[] memory _owners, uint256 _required) {
         require(_owners.length > 0, "Owners required");
         require(_required > 0, "Required confirmations must be greater than zero");
