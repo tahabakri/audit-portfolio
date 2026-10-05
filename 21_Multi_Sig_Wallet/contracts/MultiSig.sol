@@ -11,6 +11,9 @@ contract MultiSig {
         bool executed;
     }
 
+    // transaction ID => owner address => has this owner confirmed?
+    mapping(uint256 => mapping(address => bool)) public confirmations;
+
     Transaction[] public transactions;
 
     function transactionCount() public view returns (uint256) {
