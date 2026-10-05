@@ -28,6 +28,20 @@ contract MultiSig {
 
     }
 
+    function getConfirmationsCount(uint256 transactionId) public view returns (uint256) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < owners.length; i++) {
+            if(confirmations[transactionId][owners[i]]) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    function confirmTransaction(uint transactionId) public {
+        confirmations[transactionId][msg.sender] = true;
+    }
+
     constructor(address[] memory _owners, uint256 _required) {
         require(_owners.length > 0, "Owners required");
         require(_required > 0, "Required confirmations must be greater than zero");
