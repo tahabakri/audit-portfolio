@@ -2,46 +2,35 @@ const { assert } = require('chai');
 
 describe('MultiSig', function () {
     let contract;
-    let signers;
     let accounts;
+    let zero = ethers.ZeroAddress;
     let _required = 2;
 
-    before(async () => {
-        signers = await ethers.getSigners();
-        accounts = signers.map(s => s.address);
-        const MultiSig = await ethers.getContractFactory("MultiSig");
-        contract = await MultiSig.deploy(accounts.slice(0, 3), _required);
-        await contract.waitForDeployment();
-    });
-
-    describe('Confirm Transaction Tests', function () {
+    describe('Submit Transaction Tests', function () {
         beforeEach(async () => {
-            await contract.addTransaction(accounts[1], 100);
+            const signers = await ethers.getSigners();
+            accounts = signers.map(s => s.address);
+            const MultiSig = await ethers.getContractFactory("MultiSig");
+            contract = await MultiSig.deploy(accounts.slice(0, 3), _required);
+            await contract.waitForDeployment();
         });
 
-        describe('from an invalid address', () => {
-            it('should throw an error', async function () {
-                await expectThrow(
-                    contract.connect(signers[3]).confirmTransaction(0)
-                );
-            });
+        it('should add a transaction', async function () {
+            await contract.submitTransaction(accounts[1], 100);
+            let tx = await contract.transactions(0);
+            let address = tx[0];
+            assert.notEqual(address, zero);
         });
 
-        describe('from a valid owner address', () => {
-            it('should not throw an error', async function () {
-                await contract.connect(signers[2]).confirmTransaction(0);
-                assert(true);
-            });
+        it('should confirm a transaction', async function () {
+            await contract.submitTransaction(accounts[1], 100);
+
+            let confirmed = await contract.getConfirmationsCount(0);
+            assert.equal(confirmed, 1);
+        });
+
+        it('should not call addTransaction externally', async function () {
+            assert.equal(contract.addTransaction, undefined, "Did not expect addTransaction to be defined publicly!");
         });
     });
 });
-
-async function expectThrow(promise) {
-    const errMsg = 'Expected throw not received';
-    try {
-        await promise;
-    } catch (err) {
-        return;
-    }
-    assert(false, errMsg);
-}

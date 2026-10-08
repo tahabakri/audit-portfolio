@@ -20,12 +20,16 @@ contract MultiSig {
         return transactions.length;
     }
 
-    function addTransaction(address _destination, uint256 _value) public returns (uint256) {
+    function addTransaction(address _destination, uint256 _value) internal returns (uint256) {
         uint256 txId = transactions.length;
         Transaction memory transaction = Transaction( _destination, _value, false);
         transactions.push(transaction);
         return txId;
 
+    }
+    function submitTransaction(address _destination, uint256 _value) external {
+        uint256 txId = addTransaction(_destination, _value);
+        confirmTransaction(txId);
     }
 
     function getConfirmationsCount(uint256 transactionId) public view returns (uint256) {
