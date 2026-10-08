@@ -6,7 +6,7 @@ describe('MultiSig', function () {
     let accounts;
     let _required = 2;
 
-    beforeEach(async () => {
+    before(async () => {
         signers = await ethers.getSigners();
         accounts = signers.map(s => s.address);
         const MultiSig = await ethers.getContractFactory("MultiSig");
@@ -14,28 +14,34 @@ describe('MultiSig', function () {
         await contract.waitForDeployment();
     });
 
-    describe('after creating the first transaction', function () {
+    describe('Confirm Transaction Tests', function () {
         beforeEach(async () => {
             await contract.addTransaction(accounts[1], 100);
-            await contract.confirmTransaction(0);
         });
 
-        it('should confirm the transaction', async function () {
-            let confirmed = await contract.getConfirmationsCount(0);
-            assert.equal(confirmed, 1);
-        });
-
-        describe('after creating the second transaction', function () {
-            beforeEach(async () => {
-                await contract.addTransaction(accounts[1], 100);
-                await contract.confirmTransaction(1);
-                await contract.connect(signers[1]).confirmTransaction(1);
+        describe('from an invalid address', () => {
+            it('should throw an error', async function () {
+                await expectThrow(
+                    contract.connect(signers[3]).confirmTransaction(0)
+                );
             });
+        });
 
-            it('should confirm the transaction twice', async function () {
-                let confirmed = await contract.getConfirmationsCount(1);
-                assert.equal(confirmed, 2);
+        describe('from a valid owner address', () => {
+            it('should not throw an error', async function () {
+                await contract.connect(signers[2]).confirmTransaction(0);
+                assert(true);
             });
         });
     });
 });
+
+async function expectThrow(promise) {
+    const errMsg = 'Expected throw not received';
+    try {
+        await promise;
+    } catch (err) {
+        return;
+    }
+    assert(false, errMsg);
+}

@@ -39,6 +39,21 @@ contract MultiSig {
     }
     
     function confirmTransaction(uint transactionId) public {
+        // Assume the caller is not an owner.
+        bool isOwner = false;
+
+        // Check every address in the owners array.
+        for (uint256 i = 0; i < owners.length; i++) {
+            // Does the current owner match the caller?
+            if (owners[i] == msg.sender) {
+                isOwner = true;
+            }
+        }
+
+        // Reject anyone who is not an owner.
+        require(isOwner, "Not an owner");
+
+        // Save the owner's confirmation for this transaction.
         confirmations[transactionId][msg.sender] = true;
     }
 
